@@ -6,43 +6,53 @@
 
 struct Wrapper {
 	// todo: add definitions here
-	void (*p)(std::string);
-	void (*b)();
-	void (*a)();
+	void (*m)(std::string);
+	void (*begin)();
+	void (*after)();
+	Wrapper * next= nullptr;
+	Wrapper * pre = nullptr;
 };
-
-
 // todo: add definition for link list
-struct list{
-		Wrapper w;
-		Wrapper* left;
-		Wrapper* right;
-};
+
+Wrapper * head = new Wrapper;
+
+Wrapper * t = head;
 
 
 // todo: create()
-Wrapper* create(void foo(std::string),void before(),void after()){
-	void (*p)(std::string);void (*b)();void (*a)();
-	p =foo,b=before,a=after;
-	static Wrapper w ={p,b,a};
-	return &w;
+Wrapper * create(void foo(std::string id),void before(),void after()){
+	if(head == nullptr)head = new Wrapper,t=head;
+	Wrapper * temp = new Wrapper;
+	temp->pre = t;
+	t->next = temp;
+	t = t->next;
+
+	t->m = foo;
+	t->begin = before;
+	t->after = after;
+	return t;
 }
-
-
 // todo: remove()
-void remove(Wrapper *f){
-
+void remove(Wrapper* w){
+	if(w== nullptr)return;
+	w->pre->next = w->next;
+	if(w->next!= nullptr)w->next->pre = w->pre;
+	else t=w->pre;
+	delete w;
 }
-
-
 // todo: run()
-void run(Wrapper *f, std::string s){
-
+void run(Wrapper*w,std::string s){
+	if(w== nullptr)return;
+	w->begin();
+	w->m(std::move(s));
+	w->after();
 }
-
-
 // todo: destroy()
 void destroy(){
-
+	while(head!= nullptr){
+		Wrapper * temp = head->next;
+		delete head;
+		head = temp;
+	}
 }
 #endif //Wrapper_CPP_Wrapper_HPP

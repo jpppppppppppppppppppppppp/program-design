@@ -16,19 +16,21 @@ struct problemtype{
 	int RETime=0;
 	int TLETime=0;
 	int passtime=0;
-	friend bool operator < (const problemtype &lhs,const problemtype &rhs){
-		if(lhs.tryTimes!=rhs.tryTimes)return lhs.tryTimes > rhs.tryTimes;
-		return lhs.AcTime > rhs. AcTime;
+	friend bool operator < (const problemtype &lhs,const problemtype &rhs) {
+		if(lhs.tryTimes != rhs.tryTimes)return lhs.tryTimes > rhs.tryTimes;
+		return lhs.AcTime > rhs.AcTime;
 	}
 };
-void write(const char *f,int len){
-	auto p=f;
-	for(int i=0;i<len;i++){
+
+void write(const char *f,int len) {
+	auto p = f;
+	for(int i = 0; i < len; i++) {
 		putchar(*p);
 		p++;
 	}
 	puts("");
 }
+
 struct team{
 	int num;
 	std::string name;
@@ -75,7 +77,8 @@ void flush(std::unordered_map<std::string, team> &m,std::vector<std::string>&ran
 	}
 }//更新榜单
 
-void reflush(std::unordered_map<std::string, team> &m,std::vector<std::string>&rank,std::set<team>&team_set,std::unordered_map<std::string,std::vector<problemtype>>&freezing) {
+void reflush(std::unordered_map<std::string, team> &m,std::vector<std::string>&rank,std::set<team>&team_set,
+						 std::unordered_map<std::string,std::vector<problemtype>>&freezing) {
 	team_set.clear();
 	for(auto it: m)team_set.insert(it.second);
 	auto last_iter = team_set.end();
@@ -154,13 +157,16 @@ void reflush(std::unordered_map<std::string, team> &m,std::vector<std::string>&r
 		temp_rank++;
 	}
 }
+
 std::set<team>s;
 std::unordered_map<std::string, team>m;
 std::vector<std::string>rank;
 std::unordered_map<std::string,std::vector<problemtype>>freezing;
+
 bool NotStart = true;
 bool NotFreeze = true;
 int duration_time = 0, problem = 0;
+
 int main() {
 //	freopen("13.in", "r", stdin);
 //	freopen("ans.txt","w",stdout);
@@ -171,6 +177,7 @@ int main() {
 		iss.str(command);
 		std::string mode;
 		iss >> mode;
+
 		if(mode == "START") {
 			if(NotStart) {
 				for(int i = 0; i < m.size(); i++)rank.push_back("");
@@ -187,6 +194,7 @@ int main() {
 			}
 			else write("[Error]Start failed: competition has started.", 45);
 		}
+
 		else if(mode == "ADDTEAM") {
 			if(!NotStart) {
 				std::cout << "[Error]Add failed: competition has started." << std::endl;
@@ -203,9 +211,8 @@ int main() {
 				}
 			}
 		}
+
 		else if(mode == "SUBMIT") {
-
-
 			char problemName;
 			std::string meiyongdehua;
 			iss >> problemName;
@@ -299,10 +306,12 @@ int main() {
 				if(statue == "Time_Limit_Exceed")t.problemList[problemNum].TLETime = time, t.tledone = problemNum;
 			}
 		}
+
 		else if(mode == "FLUSH") {
 			flush(m, rank, s);
 			write("[Info]Flush scoreboard.", 23);
 		}
+
 		else if(mode == "FREEZE") {
 			if(NotFreeze) {
 				NotFreeze = false;
@@ -310,6 +319,7 @@ int main() {
 			}
 			else write("[Error]Freeze failed: scoreboard has been frozen.", 49);
 		}
+
 		else if(mode == "SCROLL") {
 			if(NotFreeze)write("[Error]Scroll failed: scoreboard has not been frozen.", 53);
 			else {
@@ -368,6 +378,7 @@ int main() {
 				NotFreeze = true;
 			}
 		}
+
 		else if(mode == "QUERY_SUBMISSION") {
 			bool flag = true;
 			std::string name, statue, meiyongdehua;
@@ -533,6 +544,7 @@ int main() {
 				}
 			}
 		}
+
 		else if(mode == "QUERY_RANKING") {
 			std::string name;
 			iss >> name;
